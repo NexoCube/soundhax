@@ -1783,11 +1783,11 @@ def sp_inst_reload():
 
 sp_norec_v = IntVar()
 sp_norec_cb = Checkbutton(tab1, text="No Recoil", command=sp_norec, var=sp_norec_v)
-sp_norec_cb_n.grid(row=0, column=0)
+sp_norec_cb.grid(row=0, column=0)
 
 sp_ir_v = IntVar()
 sp_ir_cb = Checkbutton(tab1, text="Instant Reload", command=sp_inst_reload, var=sp_ir_v)
-sp_ir_cb_n.grid(row=0, column=1)
+sp_ir_cb.grid(row=0, column=1)
 
 note.add(tab1, text = "Inject")
 note.add(tab2, text = "Host")
