@@ -565,6 +565,10 @@ def dl_file(str_):
 		return 0
 
 	if "Black" in str_:
+
+
+
+		
 		f = open(p, 'w+b')
 		f.write(r.content)
 		f.close()
