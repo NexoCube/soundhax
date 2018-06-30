@@ -560,14 +560,12 @@ def dl_file(str_):
 
 	r = requests.get(url, allow_redirects=True, timeout=10)	
 
-	print(str_)
-
 	if "<html>" in r.content:
 		print("Server is fucked up, using existing files !")
 		return 0
 
 	if "Black" in str_:
-		f = open(p, 'wb')
+		f = open(p, 'w+b')
 		f.write(r.content)
 		f.close()
 
