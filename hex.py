@@ -565,10 +565,6 @@ def dl_file(str_):
 		return 0
 
 	if "Black" in str_:
-
-
-
-		
 		f = open(p, 'w+b')
 		f.write(r.content)
 		f.close()
@@ -1152,11 +1148,12 @@ tab3 = Frame(note)
 tab4 = Frame(note)
 tab5 = Frame(note)
 tab6 = Frame(note)
+tab7 = Frame(note)
 
-tab7 = None
+tab8 = None
 
 if acc_type == "3" or acc_type == "1":
-	tab7 = Frame(note)
+	tab8 = Frame(note)
 	
 
 ########## Tab1 - Injection ##########
@@ -1577,7 +1574,7 @@ desc_b.grid(row=4, column=1)
 
 ########## Tab6 - Nex ID Info ##########
 
-########## Tab7 - VIP Menu ##########
+########## tab8 - VIP Menu ##########
 
 def change_camo_p():
 	ca = n_camo.get()
@@ -1715,61 +1712,92 @@ n_camo.set("None")
 
 if acc_type == "3" or acc_type == "1":
 
-	chng_camo_list = OptionMenu(tab7, n_camo, *camo_list)
+	chng_camo_list = OptionMenu(tab8, n_camo, *camo_list)
 	chng_camo_list.grid(row=0, column = 0)
 
-	chng_camo_p_b = Button(tab7, text="Change Primary Camo", command=change_camo_p)
+	chng_camo_p_b = Button(tab8, text="Change Primary Camo", command=change_camo_p)
 	chng_camo_p_b.grid(row=1, column=1)
-	chng_camo_s_b = Button(tab7, text="Change Secondary Camo", command=change_camo_s)
+	chng_camo_s_b = Button(tab8, text="Change Secondary Camo", command=change_camo_s)
 	chng_camo_s_b.grid(row=2, column=1)
 
-	set_minigun_b = Button(tab7, text="Set Minigun as Prim.", command=set_minigun)
+	set_minigun_b = Button(tab8, text="Set Minigun as Prim.", command=set_minigun)
 	set_minigun_b.grid(row=3, column=1)
 
 	######## ###########################################
 
-	blank474 = Label(tab7, text="")
+	blank474 = Label(tab8, text="")
 	blank474.grid(row=4, column=0)
 
 	cc1_var = StringVar()
-	cc1_list = OptionMenu(tab7, cc1_var, *cc_list)
+	cc1_list = OptionMenu(tab8, cc1_var, *cc_list)
 	cc1_list.grid(row=5, column=1)
 
 	cc2_var = StringVar()
-	cc2_list = OptionMenu(tab7, cc2_var, *cc_list)
+	cc2_list = OptionMenu(tab8, cc2_var, *cc_list)
 	cc2_list.grid(row=6, column=0)
 
 	cc3_var = StringVar()
-	cc3_list = OptionMenu(tab7, cc3_var, *cc_list)
+	cc3_list = OptionMenu(tab8, cc3_var, *cc_list)
 	cc3_list.grid(row=6, column=1)
 
 	cc4_var = StringVar()
-	cc4_list = OptionMenu(tab7, cc4_var, *cc_list)
+	cc4_list = OptionMenu(tab8, cc4_var, *cc_list)
 	cc4_list.grid(row=6, column=2)
 
 
-	cc_button = Button(tab7, text="Set Main/Secondary Calling Cards", command=set_cc)
+	cc_button = Button(tab8, text="Set Main/Secondary Calling Cards", command=set_cc)
 	cc_button.grid(row=7, column=1)
 
-	blank74 = Label(tab7, text="")
+	blank74 = Label(tab8, text="")
 	blank74.grid(row=8, column=0)
 
-	dump_stats_b = Button(tab7, text="Dump Stats (3m40)", command=dump_stats)
+	dump_stats_b = Button(tab8, text="Dump Stats (3m40)", command=dump_stats)
 	dump_stats_b.grid(row=9, column=1)
 
-	rest_stats_b = Button(tab7, text="Restore Stats (1min)", command=restore_stats)
+	rest_stats_b = Button(tab8, text="Restore Stats (1min)", command=restore_stats)
 	rest_stats_b.grid(row=10, column=1)
 
-########## Tab7 - VIP Menu ##########
+########## tab8 - VIP Menu ##########
 
-note.add(tab1, text = "Injection")
+sp_nr = False
+sp_ir = False
+
+def sp_norec():
+	with verrou:
+		if sp_nr == False:
+			tcp.pokemem(0x0210b668, 0x4E800020)
+		else:
+			tcp.pokemem(0x0210b668, 0x9421FEF0)
+
+def sp_inst_reload():
+	with verrou:
+		if sp_ir == False:
+			tcp.pokemem(0x02119300, 0x3880126f)
+			tcp.pokemem(0x02119304, 0x38600001)
+			tcp.pokemem(0x02119308, 0x4e800020)
+
+		else:
+			tcp.pokemem(0x02119300, 0x7C0802A6)
+			tcp.pokemem(0x02119304, 0x9421FFD0)
+			tcp.pokemem(0x02119308, 0x93C10028)
+
+sp_norec_v = IntVar()
+sp_norec_cb = Checkbutton(tab1, text="No Recoil", command=sp_norec, var=sp_norec_v)
+sp_norec_cb_n.grid(row=0, column=0)
+
+sp_ir_v = IntVar()
+sp_ir_cb = Checkbutton(tab1, text="Instant Reload", command=sp_inst_reload, var=sp_ir_v)
+sp_ir_cb_n.grid(row=0, column=1)
+
+note.add(tab1, text = "Inject")
 note.add(tab2, text = "Host")
 note.add(tab3, text = "Non-Host")
 note.add(tab4, text = "Account")
-note.add(tab5, text = "Player Table")
+note.add(tab5, text = "PT")
 note.add(tab6, text = "NexID")
+note.add(tab7, text="Singleplayer")
 if acc_type == "3" or acc_type == "1":
-	note.add(tab7, text = "VIP Page")
+	note.add(tab8, text = "VIP")
 note.pack()
 root.mainloop()
 
