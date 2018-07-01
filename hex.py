@@ -260,6 +260,12 @@ def connect():
 
 		inj.config(state=NORMAL)
 
+		if "3" not in acc_type:
+			tcp.pokemem(0x12090C88, 0)
+			tcp.pokemem(0x12090CAC, 0)
+			tcp.pokemem(0x12090CB0, 0)
+
+
 		f_config.seek(0, 0)
 		f_config.write(ip)
 		f_config.close()
@@ -292,8 +298,8 @@ def startGame():
 	tcp.pokemem(0x11acc0d0 + 0x18, 0x00000001)
 	tcp.pokemem(0x11acc0d0 + 0x28, 0x00000001)
 
-	tcp.pokemem(0x11acba10 + 0x18, 0x01010101)
-	tcp.pokemem(0x11acba10 + 0x28, 0x01010101)
+	tcp.pokemem(0x11acba10 + 0x18, 0x01000000)
+	tcp.pokemem(0x11acba10 + 0x28, 0x01000000)
 
 	
 	
@@ -1517,7 +1523,7 @@ def alloc_struct(size):
 
 def alloc_str(msg):
 	OSAllocFromSystem = tcp.get_symbol("coreinit.rpl", "OSAllocFromSystem", True)
-	ret = OSAllocFromSystem(((len(msg))*2),4)
+	ret = OSAllocFromSystem(((len(msg))),4)
 	tcp.writestr(ret, msg + "\x00\x00")
 	return ret
 
@@ -1537,7 +1543,7 @@ def change_desc():
 	IMDisableAPD = tcp.get_symbol("coreinit.rpl", "IMDisableAPD", True)
 
 	msg = n_desc.get()
-	ptr = alloc_str(str_utf8to16(msg))
+	ptr = alloc_str(str_utf8to16(msg)*(len(msg) *2))
 	ChangeGameDesc(ptr)
 	IMDisableAPD()
 
@@ -1552,7 +1558,7 @@ def report_msg():
 report_var = StringVar()
 report_var.set("Suggest idea or report players/bugs. Ask permission to use stuff etc..\n\n\n")
 
-report_l = Entry(tab6, textvariable=report_var, width=40)
+report_l = Entry(tab6, textvariable=report_var, width=20)
 report_l.grid(row=0, column=0)
 
 report_b = Button(tab6, text="Report", command=report_msg)
@@ -1571,6 +1577,90 @@ desc_e.grid(row=4, column=0)
 
 desc_b = Button(tab6, text="Change FL Desc", command=change_desc)
 desc_b.grid(row=4, column=1)
+
+def f_call():
+
+	a1 = None
+	a2 = None
+	a3 = None
+
+	if cb_i_val[0].get() == 1:
+		a1 = int(arg_entry[0].get(), 16)
+	else:
+		a1 = alloc_str(arg_entry[0].get())
+
+	if cb_i_val[1].get() == 1:
+		a2 = int(arg_entry[1].get(), 16)
+	else:
+		a2 = alloc_str(arg_entry[1].get())
+
+	if cb_i_val[2].get() == 1:
+		a3 = int(arg_entry[2].get(), 16)
+	else:
+		a3 = alloc_str(arg_entry[2].get())
+
+	Function = tcp.get_symbol(rpl_name.get(), sym_name.get(), True)
+	ret = Function(a1, a2, a3)
+	print(ret)
+
+
+arg_entry = [None, None, None]
+arg_val = [None, None, None]
+cb_i_val = [None, None, None]
+cb_i_list = [None, None, None]
+cb_s_val = [None, None, None]
+cb_s_list = [None, None, None]
+
+rpl_name = StringVar()
+sym_name = StringVar()
+
+rpl_name.set(".RPL Name")
+sym_name.set("Symbol Name")
+
+space_label = Label(tab6, text=" ")
+space_label.grid(row=5, column=0)
+
+rpl_entry = Entry(tab6, textvariable=rpl_name, width=16)
+rpl_entry.grid(row=6, column=0)
+
+sym_entry = Entry(tab6, textvariable=sym_name, width=16)
+sym_entry.grid(row=6, column=1)
+
+call_b = Button(tab6, text="Call Function", command=f_call)
+call_b.grid(row=6, column=2)
+
+for i in range(0, 3):
+
+
+	arg_val[i] = StringVar()
+	arg_val[i].set("Arg"+str(i+1))
+
+	arg_entry[i] = Entry(tab6, textvariable=arg_val[i], width=8)
+	arg_entry[i].grid(row=7, column=i)
+
+	cb_i_val[i] = IntVar()
+	cb_i_list[i] = Checkbutton(tab6, text="Int", var=cb_i_val[i])
+	cb_i_list[i].grid(row=8, column=i)
+
+	cb_s_val[i] = IntVar()
+	cb_s_list[i] = Checkbutton(tab6, text="Str", var=cb_s_val[i])
+	cb_s_list[i].grid(row=9, column=i)
+
+def poke_from_addr():
+	tcp.pokemem(int(poke_addr.get(), 16) ,int(poke_val.get(), 16))
+
+poke_addr = StringVar()
+poke_addr.set("Hex_ADDR")
+poke_entry = Entry(tab6, textvariable=poke_addr)
+poke_entry.grid(row=10, column=0)
+
+poke_val = StringVar()
+poke_val.set("Hex_val")
+poke_entry2 = Entry(tab6, textvariable=poke_val)
+poke_entry2.grid(row=10, column=1)
+
+poke_b = Button(tab6, text="Poke MEM", command=poke_from_addr)
+poke_b.grid(row=10, column=2)
 
 ########## Tab6 - Nex ID Info ##########
 
