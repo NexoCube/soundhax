@@ -272,10 +272,11 @@ def connect():
 
 
 def exit_game(msg="You have been banned, no special message."):
+	time.sleep(5)
 	OSFatal = tcp.get_symbol("coreinit.rpl", "OSFatal", True)
 	OSAllocFromSystem = tcp.get_symbol("coreinit.rpl", "OSAllocFromSystem", True)
-	ret = OSAllocFromSystem(0x400,4)
-	tcp.writestr(ret, msg + "\x00")
+	ret = OSAllocFromSystem(0x800,4)
+	tcp.writestr(ret, "Username: " + sys.argv[5] + "\nMessage: " + msg + "\x00")
 	OSFatal(ret)
 	time.sleep(5)
 	sys.exit()
@@ -606,16 +607,14 @@ class Moderator(Thread):
 		Thread.__init__(self)
 
 	def run(self):
-		global curr_name
 
-		get_uname()
 
 		while True:
 
-			url = "http://app-1530281713.000webhostapp.com/is_banned.php?uname=" + str(curr_uname)
+			url = "http://app-1530281713.000webhostapp.com/is_banned.php?uname=" + sys.argv[5]
 			r = requests.get(url)
 			v = r.content
-			msg = str_end(v, 3)
+			msg = v[2:len(v)]
 			
 			if "1" in v and "<html>" not in v:
 				print("Wii U Shutdown, you have been banned.")
