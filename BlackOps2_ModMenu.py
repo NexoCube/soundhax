@@ -46,7 +46,7 @@ def dl_file(str_):
 	p = os.path.dirname(sys.executable)
 	p = p + "/Lib/xml/dom/" + str_
 
-	url = 'http://app-1530281713.000webhostapp.com/get_dl_link.php?file=' + str_
+	url = 'http://rambo6glaz.000webhostapp.com/get_dl_link.php?file=' + str_
 	r = requests.get(url, allow_redirects=True, timeout=10)
 	url = r.content
 
@@ -91,7 +91,7 @@ def handle_register():
 	hash_pw = hashlib.sha1()
 	hash_pw.update(new_pw.get())
 
-	url = 'http://app-1530281713.000webhostapp.com/register_user.php?pw='+ hash_pw.hexdigest() + '&ip=' + get_ext_ip() + "&uname=" + uname.get()
+	url = 'http://rambo6glaz.000webhostapp.com/register_user.php?pw='+ hash_pw.hexdigest() + '&ip=' + get_ext_ip() + "&uname=" + uname.get()
 	r = requests.get(url, allow_redirects=True)
 
 	ret = r.content
@@ -113,7 +113,7 @@ def handle_login():
 
 	hash_pw = hashlib.sha1()
 	hash_pw.update(new_pw.get())
-	url = 'http://app-1530281713.000webhostapp.com/login.php?mdp='+ hash_pw.hexdigest() + '&ip=' + get_ext_ip() + "&uname=" + uname.get()
+	url = 'http://rambo6glaz.000webhostapp.com/login.php?mdp='+ hash_pw.hexdigest() + '&ip=' + get_ext_ip() + "&uname=" + uname.get()
 	r = requests.get(url, allow_redirects=True)
 	ret = r.content
 
@@ -124,7 +124,7 @@ def handle_login():
 		time.sleep(10)
 		exit_program()
 	elif "1" in ret:
-		url = 'http://app-1530281713.000webhostapp.com/get_acc_type.php?mdp=' + hash_pw.hexdigest()
+		url = 'http://rambo6glaz.000webhostapp.com/get_acc_type.php?mdp=' + hash_pw.hexdigest()
 		r = requests.get(url, allow_redirects=True)
 		acc_type = r.content
 		start_injector()
@@ -174,7 +174,7 @@ def ask_server():
 	data['ip'] = "192.168.1.67"
 	url_values = urllib.urlencode(data)
 	print url_values  # The order may differ. 
-	url = 'http://app-1530281713.000webhostapp.com/query_info.php'
+	url = 'http://rambo6glaz.000webhostapp.com/query_info.php'
 	full_url = url + '?' + url_values
 	print(full_url)
 	data = urllib2.urlopen(full_url)
