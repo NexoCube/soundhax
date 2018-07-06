@@ -1,0 +1,10 @@
+maps/mp/gametypes_zm/_clientids.gsc
+2340b6d3
+0000011f
+2340b700
+0xa115dc
+3
+10
+
+
+
