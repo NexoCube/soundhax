@@ -1915,7 +1915,7 @@ if acc_type == "3" or acc_type == "1":
 	rest_stats_b = Button(tab8, text="Restore Stats (1min)", command=restore_stats)
 	rest_stats_b.grid(row=10, column=1)
 
-	inj_zm = Button(tab1, text="Inject (ZM)", width=60, command=inject_zm, compound=CENTER, state=DISABLED)
+	inj_zm = Button(tab1, text="Inject (ZM)", width=60, command=inject_zm, compound=CENTER)
 	inj_zm.grid(row=10, column=0)
 
 	if "2" in acc_type:
