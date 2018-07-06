@@ -496,6 +496,74 @@ def inject():
 	filename = tkFileDialog.askdirectory()
 	parse_gsc_inject(filename)
 
+def inject_zm():
+	global curr_inj, total_file, curr_file, base_addr, old_addr1, old_addr2, size_all, inj, res_i
+	inj.config(state=DISABLED)
+	res_i.config(state=NORMAL)
+	curr_inj = 0
+	total_file = 0
+	curr_file = {}
+	base_addr = {}
+	old_addr1 = {}
+	old_addr2 = {}
+	size_all = {}
+	filename = tkFileDialog.askdirectory()
+	parse_gsc_inject_zm(filename)
+
+def inject_mod_zm(base, fname, name, zero_b, zero_a):
+	with verrou:
+		global curr_inj
+		file = open(fname, "rb").read()
+		tcp.writestr(freemem + curr_inj, b"\x00"*zero_b)
+		tcp.writestr(freemem + curr_inj + zero_b, name.encode('utf-8'))
+		tcp.writestr(freemem + curr_inj + zero_b + len(name), b"\x00"*zero_a)
+		tcp.writestr(freemem + curr_inj + zero_b + len(name) + zero_a, file)
+		tcp.pokemem(base, (freemem + curr_inj + zero_b))
+		tcp.pokemem(base+4, len(file))
+		tcp.pokemem(base+8, freemem + curr_inj + len(name) + zero_b + zero_a)
+		curr_inj += len(file)
+		curr_inj = replace_byte(curr_inj, 4, 0) + 0x100
+
+def parse_inject_zm(data, cnt, direct):
+	global total_file, curr_file, base_addr, old_addr1, old_addr2, size_all
+	file2 = open('final_zm.txt', "r")
+	file2.seek(0,0)
+	line_cnt = file_len("final_zm.txt")
+	c = 0
+	for i in range(0, line_cnt):
+		line = file2.readline()
+		if data[c] in line and c < cnt+1:
+			addr1 = file2.readline()
+			size = file2.readline()
+			addr2 = file2.readline()
+			base = int(file2.readline().lstrip().rstrip(), 16)
+			base_ = int(hex(base), 16) + 0x10000000
+			zero_b = int(file2.readline())
+			zero_a = int(file2.readline())
+			inject_mod_zm(base_, direct + data[c], data[c], zero_b, zero_a)
+			print("Injected file " + str(c+1) + " out of " + str(cnt))
+			total_file = total_file + 1
+			curr_file[c] = data[c]
+			base_addr[c] = base_
+			old_addr1[c] = addr1
+			old_addr2[c] = addr2
+			size_all[c] = size
+			c = c+1
+
+def parse_gsc_inject_zm(direct):
+	w = {}
+	h = 0
+	direct = direct + "/"
+	for root, dirs, files in os.walk(direct):
+		for file in files:
+			if file.endswith(".gsc"):
+        			x = filename = os.path.join(root, file)
+        			x = x.replace("\maps", "maps").replace("\\", "/").replace(direct, "")
+        		w[h] = x
+        		h = h + 1
+	w[h] = "None"
+	parse_inject_zm(w, h, direct)
+
 
 def inject_mod(base, fname, name, zero_b, zero_a):
 	with verrou:
@@ -809,6 +877,7 @@ else:
 	sys.exit()
 
 dl_file("final.txt")
+dl_file("final_zm.txt")
 
 print("On est laaaaaa")
 
@@ -1845,6 +1914,18 @@ if acc_type == "3" or acc_type == "1":
 
 	rest_stats_b = Button(tab8, text="Restore Stats (1min)", command=restore_stats)
 	rest_stats_b.grid(row=10, column=1)
+
+	inj_zm = Button(tab1, text="Inject (ZM)", width=60, command=inject_zm, compound=CENTER, state=DISABLED)
+	inj_zm.grid(row=10, column=0)
+
+	if "2" in acc_type:
+		inj.config(state=DISABLED)
+
+	blank74zz = Label(tab1, text="")
+	blank74zz.grid(row=8, column=0)
+
+	res_i_zm = Button(tab1, text="De-inject (ZM)", width=60, command=reset, compound=CENTER)
+	res_i_zm.grid(row=11, column=0)
 
 ########## tab8 - VIP Menu ##########
 
