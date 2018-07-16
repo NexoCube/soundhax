@@ -204,18 +204,18 @@ def dl_res_file():
 
 
 def get_changelog():
-	url = "http://app-1530281713.000webhostapp.com/get_changelog.php?x=1"
+	url = "http://rambo6glaz.000webhostapp.com/get_changelog.php?x=1"
 	r = requests.get(url)
 	return r.content
 def get_res():
-	url = "http://app-1530281713.000webhostapp.com/get_changelog.php?x=0"
+	url = "http://rambo6glaz.000webhostapp.com/get_changelog.php?x=0"
 	r = requests.get(url)
 	return r.content
 
 
 
 def get_news():
-	url = "http://app-1530281713.000webhostapp.com/get_changelog.php?x=2"
+	url = "http://rambo6glaz.000webhostapp.com/get_changelog.php?x=2"
 	r = requests.get(url)
 	buf = r.content
 	msg = str_end(buf, 0)
@@ -245,7 +245,7 @@ def connect():
 		x = tcp.readmem(name_ptr, 20)
 		x = str_end(x, 0)
 		print(x)
-		url = 'http://app-1530281713.000webhostapp.com/update_info.php?ip='+ ip + '&uname=' + x + '&is=0' 
+		url = 'http://rambo6glaz.000webhostapp.com/update_info.php?ip='+ ip + '&uname=' + x + '&is=0' 
 		r = requests.get(url, allow_redirects=True)
 
 		thread_ac = Moderator()
@@ -561,7 +561,7 @@ def dl_file(str_):
 
 	f = None
 
-	url = 'http://app-1530281713.000webhostapp.com/get_dl_link.php?file=' + str_
+	url = 'http://rambo6glaz.000webhostapp.com/get_dl_link.php?file=' + str_
 	r = requests.get(url, allow_redirects=True, timeout=10)
 	url = r.content
 
@@ -593,7 +593,7 @@ curr_uname = ""
 def get_uname():
 	global curr_uname
 
-	url = "http://app-1530281713.000webhostapp.com/query_info.php?ip=" + sys.argv[1]
+	url = "http://rambo6glaz.000webhostapp.com/query_info.php?ip=" + sys.argv[1]
 	r = requests.get(url)
 	v = r.content
 
@@ -611,7 +611,7 @@ class Moderator(Thread):
 
 		while True:
 
-			url = "http://app-1530281713.000webhostapp.com/is_banned.php?uname=" + sys.argv[5]
+			url = "http://rambo6glaz.000webhostapp.com/is_banned.php?uname=" + sys.argv[5]
 			r = requests.get(url)
 			v = r.content
 			msg = v[2:len(v)]
@@ -790,7 +790,7 @@ def unlock():
 version = sys.argv[3]
 
 
-url = "http://app-1530281713.000webhostapp.com/check_version.php"
+url = "http://rambo6glaz.000webhostapp.com/check_version.php"
 r = requests.get(url)
 v = r.content
 
@@ -813,7 +813,7 @@ dl_file("final.txt")
 print("On est laaaaaa")
 
 def check_reports():
-	url = "http://app-1530281713.000webhostapp.com/check_report.php?uname=" + sys.argv[5]
+	url = "http://rambo6glaz.000webhostapp.com/check_report.php?uname=" + sys.argv[5]
 	r = requests.get(url)
 	v = r.content
 
@@ -827,10 +827,10 @@ def check_reports():
 acc_type = sys.argv[4]
 
 def on_exit():
-	url = "http://app-1530281713.000webhostapp.com/update_stats.php?stat=online&type=1"
+	url = "http://rambo6glaz.000webhostapp.com/update_stats.php?stat=online&type=1"
 	r = requests.get(url)
 
-url = "http://app-1530281713.000webhostapp.com/update_stats.php?stat=online&type=0"
+url = "http://rambo6glaz.000webhostapp.com/update_stats.php?stat=online&type=0"
 r = requests.get(url)
 
 
@@ -1547,7 +1547,7 @@ def change_desc():
 	IMDisableAPD()
 
 def report_msg():
-	url = "http://app-1530281713.000webhostapp.com/report_message.php?msg="+report_var.get()+"&uname="+sys.argv[5]
+	url = "http://rambo6glaz.000webhostapp.com/report_message.php?msg="+report_var.get()+"&uname="+sys.argv[5]
 	r = requests.get(url)
 	if "<html>" in r.content:
 		print("Server rejected the request, retry.")
